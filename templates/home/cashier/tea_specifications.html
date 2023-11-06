@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+
+
+</head>
+<body>
+
+<div class="container-fluid bg-black">
+  <ul class="nav ">
+    <li class="nav-item">
+    
+      <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+    </li>
+    <li class="nav-item">
+      <a class="nav-link link-light" href="/">HOME</a>
+    </li>
+    
+  </ul>
+
+  {% block content %}
+  {% endblock %}
+</div>
+<p>{{ item.name }}</p>
+<div class="ice">
+    <h2>Ice Level Choose One</h2>
+    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+    <label class="btn btn-secondary" for="option1">Regular Ice</label>
+
+    <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+    <label class="btn btn-secondary" for="option2">Light Ice</label>
+
+    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+    <label class="btn btn-secondary" for="option3">No Ice</label>
+
+    <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
+    <label class="btn btn-secondary" for="option4">Extra Ice</label>
+</div>
+
+<div class="sweetness">
+    <h2>Sweetness Level Choose One</h2>
+    <input type="radio" class="btn-check" name="sweetness" id="sweetness1" autocomplete="off">
+    <label class="btn btn-secondary" for="sweetness1">100% Sugar</label>
+
+    <input type="radio" class="btn-check" name="sweetness" id="sweetness2" autocomplete="off">
+    <label class="btn btn-secondary" for="sweetness2">75% Sugar</label>
+
+    <input type="radio" class="btn-check" name="sweetness" id="sweetness3" autocomplete="off">
+    <label class="btn btn-secondary" for="sweetness3">50% Sugar</label>
+
+    <input type="radio" class="btn-check" name="sweetness" id="sweetness4" autocomplete="off">
+    <label class="btn btn-secondary" for="sweetness4">25% Sugar</label>
+
+    <input type="radio" class="btn-check" name="sweetness" id="sweetness5" autocomplete="off">
+    <label class="btn btn-secondary" for="sweetness5">No Sugar</label>
+</div>
+
+<div class="toppings">
+    <h2>Toppings Choose 0 or more</h2>
+    <input type="radio" class="btn-check" name="toppings" id="toppings1" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings1">Tapioca Pearls</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings2" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings2">Grass Jelly</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings3" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings3">Golden Jelly</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings4" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings4">Aiyu Jelly</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings4" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings4">Taro Balls</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings5" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings5">Aloe Vera</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings6" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings6">Pudding</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings7" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings7">50% Sugar</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings8" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings8">25% Sugar</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings9" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings9">No Sugar</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings10" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings10">100% Sugar</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings11" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings11">75% Sugar</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings12" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings12">50% Sugar</label>
+
+    <input type="radio" class="btn-check" name="toppings" id="toppings13" autocomplete="off">
+    <label class="btn btn-secondary" for="toppings13">25% Sugar</label>
+</div>
+
+</body>
+</html>

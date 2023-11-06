@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+
+
+</head>
+<body>
+
+<div class="container-fluid bg-black">
+  <ul class="nav ">
+    <li class="nav-item">
+    
+      <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+    </li>
+    <li class="nav-item">
+      <a class="nav-link link-light" href="/">HOME</a>
+    </li>
+    
+  </ul>
+
+  {% block content %}
+  {% endblock %}
+</div>
+
+</body>
+</html>

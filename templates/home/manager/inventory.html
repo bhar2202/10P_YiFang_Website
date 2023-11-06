@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+
+
+</head>
+<body>
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+      
+        <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">HOME</a>
+      </li>
+      {% comment %} <center><h1>Inventory</h1></center> {% endcomment %}
+    </ul>
+  </div>
+  {% block content %}
+    {% for ingredient in ingredients %}
+    <tr>
+      <form action="{% url 'manager_item_fill_level' %}" method="POST" id="itemForm">
+          {% csrf_token %}
+          <button name="ingredient" type="submit" form="itemForm" value="{{ ingredient.ingredient_id }}" >{{ ingredient.name }}</button>
+      </form>
+  </tr>
+
+    {% endfor %}
+  {% endblock %}
+
+  <a href="/manager/inventory/edit/">
+    <button>Item Fill Level</button>
+  </a>
+</body>
+</html>

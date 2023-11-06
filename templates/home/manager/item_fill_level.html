@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+
+
+  </head>
+  <body>
+    <div class="container-fluid bg-black">
+      <ul class="nav ">
+        <li class="nav-item">
+        
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-light" href="/">HOME</a>
+        </li>
+        
+      </ul>
+    </div>
+
+    <h1>{{ ingredient.name }}</h1>
+    <p>Current Amount: {{ ingredient.amount }} / {{ ingredient.fill_level }} {{ ingredient.unit }}</p>
+    <p>Recommended Fill Level: {{ ingredient.recommended_fill_level }} {{ ingredient.unit }}</p>
+
+    <h1>Set Fill Level</h1>
+    <form method="post">
+      {% csrf_token %}
+      
+      <h2>New Fill Level:</h2>
+      <input type="text" name="new_fill_level" value="{{ new_fill_level }}"><br><br>
+      <button type="submit">Set Fill Level</button>
+    </form>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" name="restock" value="true">Restock to Fill Level</button>
+    </form>
+  </body>
+</html>

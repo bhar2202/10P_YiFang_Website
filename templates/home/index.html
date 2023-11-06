@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+
+
+</head>
+<body>
+
+<div class="container-fluid bg-black">
+  <ul class="nav ">
+    <li class="nav-item">
+    
+      {% comment %} <img src="{% static 'C:\Users\Brack\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\contrib\admin\static\YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid"> {% endcomment %}
+      <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+    </li>
+    <li class="nav-item">
+      <a class="nav-link link-light" href="/">HOME</a>
+    </li>
+    
+  </ul>
+
+  {% block content %}
+  {% endblock %}
+</div>
+
+<a href="/cashier/">
+  <button>Cashier Login</button>
+</a>
+
+<a href="/manager/">
+  <button>Manager Login</button>
+</a>
+
+
+</body>
+</html>

@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+  {% comment %} loading in style information {% endcomment %}
   <title>{% block title %}{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
 <body>
 
-<div class="container-fluid bg-black">
-  <ul class="nav ">
-    <li class="nav-item">
-    
-      <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
-    </li>
-    <li class="nav-item">
-      <a class="nav-link link-light" href="/">HOME</a>
-    </li>
-    {% comment %} <center><h1>Inventory</h1></center> {% endcomment %}
-  </ul>
-
-  {% block content %}
-  {% endblock %}
-</div>
+  {% comment %} ----navbar---- {% endcomment %}
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">
+          <button class = "btn"></button>
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
+      </li>
+    </ul>
+  
+    {% block content %}
+    {% endblock %}
+  </div>
 
 
 
 <a href="/testlocation/">
-    <button>Test button</button>
-    
+    <button class = "btn-custom">Test button</button>
   </a>
 
-
+  {% for ingredient in ingredients %}
+  <tr>
+      <p>{{ ingredient.name }} | {{ ingredient.amount }} / {{ ingredient.fill_level }} {{ ingredient.unit }}</p>
+  </tr>
+{% endfor %}
 
 </body>
 </html>

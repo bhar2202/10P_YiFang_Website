@@ -6,6 +6,7 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 
 </head>
@@ -31,19 +32,31 @@
               <tr>
                   <form action="{% url 'cashier_tea_specifications' %}" method="POST" id="itemForm">
                       {% csrf_token %}
-                      <button name="item" type="submit" form="itemForm" value="{{ item.item_id }}" >{{ item.name }} | Size: {{ item.size }}</button>
+                      <div class="container">
+                        <div class="row">
+                          <button class = "btn-menu shadow-lg" name="item" type="submit" form="itemForm" value="{{ item.item_id }}" >
+                            {{ item.name }}
+                            {% if item.size == 0 %}
+                              S
+                            {% elif item.size == 1 %}
+                              M
+                            {% else %}
+                              L
+                            {% endif %}
+
+                          </button>
+                        </div>
+                      </div>
                   </form>
               </tr>
           {% endfor %}
       </tr>
   {% endfor %}
   <a href="/cashier/cart/edit/">
-    <button>Edit Cart</button>
+    <button class = "btn-menu shadow-lg">Edit Cart</button>
   </a>
 
-  <a href="/cashier/cart/add/">
-    <button>Tea Specifications</button>
-  </a>
+  
 
   </body>
 </html>

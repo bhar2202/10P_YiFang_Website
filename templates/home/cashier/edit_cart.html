@@ -1,31 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+  {% comment %} loading in style information {% endcomment %}
   <title>{% block title %}{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
 <body>
 
-<div class="container-fluid bg-black">
-  <ul class="nav ">
-    <li class="nav-item">
-    
-      <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
-    </li>
-    <li class="nav-item">
-      <a class="nav-link link-light" href="/">HOME</a>
-    </li>
-    
-  </ul>
+  {% comment %} -------Navbar------ {% endcomment %}
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">
+          <button class = "btn"></button>
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
+      </li>
+    </ul>
+  </div>
 
   {% block content %}
-  {% endblock %}
-</div>
+      {% for item in items %}
+      <form action="{% url 'cashier_edit_cart' %}" method="POST" id="deleteForm">
+        {% csrf_token %}
+        <tr>
+          <button class = "btn-menu shadow-lg" name="delete" type="submit" form="deleteForm" value="{{ item.item_id }}" >{{ item.name }} ${{ item.price }} (DELETE)</button>
+        </tr>
+      </form>
+      {% endfor %}
+      <h1>Total Price: {{ total_price }}</h1>
+      <form action="{% url 'cashier_index' %}" method="POST" id="orderForm">
+        {% csrf_token %}
+        <button class = "btn-menu shadow-lg" name="place_order" type="submit" form="orderForm" value="True" >Place Order</button>
+      </form>
+    
+    {% endblock %}
 
 
 </body>

@@ -1,43 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+  {% comment %} loading in style information {% endcomment %}
   <title>{% block title %}{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
 <body>
 
-<div class="container-fluid bg-black">
-  <ul class="nav ">
-    <li class="nav-item">
-    
-      <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
-    </li>
-    <li class="nav-item">
-      <a class="nav-link link-light" href="/">HOME</a>
-    </li>
-    
-  </ul>
+  {% comment %} -------Navbar------ {% endcomment %}
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">
+          <button class = "btn"></button>
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
+      </li>
+    </ul>
+  
+    {% block content %}
+    {% endblock %}
+  </div>
 
-  {% block content %}
-  {% endblock %}
-</div>
 
-<a href="/manager/orderhistory/">
-    <button>Order History</button>
-  </a>
+{% comment %} Grid layout for buttons {% endcomment %}
 
-  <a href="/manager/inventory/">
-    <button>Inventory</button>
-  </a>
+  <div class="grid-container-three-col">
+    <div class="grid-item">
+      <a href="/manager/orderhistory/">
+          <button class = "btn btn-dark btn-custom shadow-lg">Order History</button>
+        </a>
 
-  <a href="/manager/ordertrends/">
-    <button>Order Trends</button>
-  </a>
+    </div>
+    <div class="grid-item">
+      <a href="/manager/inventory/">
+        <button class = "btn btn-dark btn-custom shadow-lg">Inventory</button>
+      </a>
+
+    </div>
+    <div class="grid-item">
+      <a href="/manager/ordertrends/">
+        <button class = "btn btn-dark btn-custom shadow-lg">Order Trends</button>
+      </a>
+    </div>  
+
+  </div>
 
 
 

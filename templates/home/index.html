@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+  {% comment %} loading in style information {% endcomment %}
   <title>{% block title %}{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
 <body>
 
+  {% comment %} -------Navbar------ {% endcomment %}
 <div class="container-fluid bg-black">
   <ul class="nav ">
     <li class="nav-item">
-    
-      {% comment %} <img src="{% static 'C:\Users\Brack\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\django\contrib\admin\static\YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid"> {% endcomment %}
-      <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+      <a class="nav-link link-light" href="/">
+        <button class = "btn"></button>
+        <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+      </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link link-light" href="/">HOME</a>
-    </li>
+
     
   </ul>
 
@@ -28,14 +30,48 @@
   {% endblock %}
 </div>
 
-<a href="/cashier/">
-  <button>Cashier Login</button>
-</a>
+      <p>Temperature: {{ forecast.temperature }} {{ forecast.temperatureUnit }}</p>
+    <p>Weather: {{ forecast.shortForecast }}</p>
 
-<a href="/manager/">
-  <button>Manager Login</button>
-</a>
 
+{% comment %} Grid layout for center page buttons {% endcomment %}
+    <div class="grid-container">
+      <!-- <div class="grid-item"></div>
+      <div class="grid-item"></div>  
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>   -->
+      
+
+      <div class="grid-item">
+        <a href="/cashier/">
+          <button class = "btn btn-dark btn-custom shadow-lg">Cashier Login</button>
+        </a>
+      </div>
+
+      <div class=" grid-item">
+        <a  href="/manager/">
+          <button class = "btn btn-dark btn-custom shadow-lg">Manager Login</button>
+        </a>
+      </div>
+
+      <div class="grid-item">
+        <a href="/menu/">
+          <button class = "btn btn-dark btn-custom shadow-lg">Menu</button>
+        </a>
+      </div>
+
+      <div class="grid-item">
+        <a href="/customer/">
+          <button class = "btn btn-dark btn-custom shadow-lg">Customer Login</button>
+        </a>
+      </div>
+      <!-- <div class="grid-item"></div>
+      <div class="grid-item"></div>  
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>   -->
+
+    </div>
+  
 
 </body>
 </html>

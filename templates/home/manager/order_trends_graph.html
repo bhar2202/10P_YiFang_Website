@@ -1,0 +1,164 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head> 
+
+  {% comment %} loading in style information {% endcomment %}
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
+
+</head>
+<body> 
+
+  {% comment %} -------Navbar------ {% endcomment %}
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">
+          <button class = "btn"></button>
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
+      </li>
+    </ul>
+  
+    {% block content %}
+    {% endblock %}
+    
+  </div>
+<div class="text-center">
+    Order Trends Graph
+
+    
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Django Model
+        class ChartData {
+            constructor(label, value) {
+                this.label = label;
+                this.value = value;
+            }
+        }
+
+        // Sample data for the bar chart
+        var chartData = [
+            new ChartData('Category 1', 12),
+            new ChartData('Category 2', 19),
+            new ChartData('Category 3', 3),
+            new ChartData('Category 4', 5),
+            new ChartData('Category 5', 2),
+        ];
+
+        // Django View
+        var labels = chartData.map(item => item.label);
+        var values = chartData.map(item => item.value);
+
+        // Django Template
+        var ctx = document.createElement('canvas').getContext('2d');
+        document.body.appendChild(ctx.canvas);
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Chart Data',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    data: values,
+                }]
+            },
+        });
+    });
+</script>
+
+
+<script>
+    function changeTextSize(action) {
+        var elements = document.querySelectorAll('body, button, p');
+
+        elements.forEach(function (element) {
+            var currentSize = parseInt(window.getComputedStyle(element).fontSize);
+
+            var minSize = 20;
+            var maxSize = 180;
+
+            if (action === 'increase' && currentSize < maxSize) {
+                element.style.fontSize = (currentSize + 2) + 'px';
+            } else if (action === 'decrease' && currentSize > minSize) {
+                element.style.fontSize = (currentSize - 2) + 'px';
+            }
+        });
+    }
+</script>
+</body>
+</html> 
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Django Bar Chart</title>
+</head>
+<body>
+
+<!-- Django Model -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Django Model
+        class ChartData {
+            constructor(label, value) {
+                this.label = label;
+                this.value = value;
+            }
+        }
+
+        // Sample data for the bar chart
+        var chartData = [
+            new ChartData('Category 1', 12),
+            new ChartData('Category 2', 19),
+            new ChartData('Category 3', 3),
+            new ChartData('Category 4', 5),
+            new ChartData('Category 5', 2),
+        ];
+
+        // Django View
+        var labels = chartData.map(item => item.label);
+        var values = chartData.map(item => item.value);
+
+        // Django Template
+        var ctx = document.createElement('canvas').getContext('2d');
+        document.body.appendChild(ctx.canvas);
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Chart Data',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    data: values,
+                }]
+            },
+        });
+    });
+</script>
+
+</body>
+</html> {% endcomment %}

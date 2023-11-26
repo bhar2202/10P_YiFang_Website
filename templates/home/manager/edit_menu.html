@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+
+
+</head>
+<body>
+
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+      
+        <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+      </li>
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">HOME</a>
+      </li>
+      
+    </ul>
+  </div>
+  {% regroup items by category as categories %}
+  {% for category in categories %}
+      <tr>
+          <h1>{{ category.grouper }}</h1>
+          {% for item in category.list %}
+              <tr>
+                  <form action="{% url 'manager_add_item' %}" method="POST" id="itemForm">
+                      {% csrf_token %}
+                      <button name="item" type="submit" form="itemForm" value="{{ item.name }},{{ item.size }}" >{{ item.name }} | Size: {{ item.size }}</button>
+                  </form>
+              </tr>
+          {% endfor %}
+      </tr>
+  {% endfor %}
+  <a href="/manager/add_item/">
+    <button>Add Item</button>
+  </a>
+  
+  </body>
+</html>
+
+
+

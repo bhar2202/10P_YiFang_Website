@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+  {% load home_extras %}
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
+
+
+</head>
+<body>
+
+  {% comment %} -------Navbar------ {% endcomment %}
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">
+          <button class = "btn"></button>
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
+      </li>
+    </ul>
+  
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  
+  <div class="grid-single-col">
+    
+</div>
+  {% regroup items by category as categories %}
+  {% for category in categories %}
+      <tr>
+          <h1>{{ category.grouper }}</h1>
+          <div class="grid-container-three-col">
+          {% for item in category.list %}
+          
+              <tr>
+                  <div class="grid-item">
+                    <h1 class="text-box-menu shadow-lg" style="margin-bottom: 75px;">
+                      {{ item.name }}
+                      {% if item.size == 0 %}
+                        S
+                      {% elif item.size == 1 %}
+                        M
+                      {% else %}
+                        L
+                      {% endif %}
+                    </h1>
+                    <img src="/static/home/{{images|keyvalue:item.item_id}}" width = "200" height = "200" alt="Image Description">
+                    <h1 class="text-box-menu shadow-lg">${{ item.price }}</h1>
+                  </div>
+                  {% if forloop.counter|divisibleby:3 and not forloop.last %}  
+                    </div><div class="grid-container-three-col">
+                  {% endif %}
+              </tr>
+          {% endfor %}
+        </div>
+      </tr>
+  {% endfor %}
+  
+
+  
+
+  </body>
+</html>

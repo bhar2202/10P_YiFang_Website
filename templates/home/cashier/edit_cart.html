@@ -3,71 +3,12 @@
 <head>
 
   {% comment %} loading in style information {% endcomment %}
-  <title>{% block title %}{% endblock %}</title>
+  <title>{% block title %}Edit Cart{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-  <style>
-    
-  /* CSS for central navigation buttons */
-  .btn-custom {
-      background-color: pink; /* Change this to your desired color */
-      border-color: black;
-      border-width: 3px;
-      font-size: 50px;
-      color: #000000; /* Text color */
-      font-family: 'Verdana', sans-serif;
-      font-weight:bold;
-      border-radius: 20px;
-      /* box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.2); */
-      /* box-shadow: inset 0px 0px 10px 0px #c43737; */
-      /* box-shadow: 50px 50px 100px rgba(0, 0, 0, 1); */
-  }
-
-  .btn-menu {
-    background-color: pink; /* Change this to your desired color */
-    border-color: black;
-    border-width: 3px;
-    font-size: 20px;
-    color: #000000; /* Text color */
-    font-family: 'Verdana', sans-serif;
-    font-weight:bold;
-    height: 50px;
-    border-radius: 20px;
-    margin: 0;
-    /* box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.2); */
-    /* box-shadow: inset 0px 0px 10px 0px #c43737; */
-    /* box-shadow: 50px 50px 100px rgba(0, 0, 0, 1); */
-  }
-
-  /* Sytle for grid containers */
-  .grid-container {
-      display: grid;
-      grid-template-columns: auto auto;
-      padding: 50px;
-    }
-
-    .grid-container-three-col {
-      display: grid;
-      grid-template-columns: auto auto auto;
-      padding: 50px;
-    }
-
-    .grid-item {
-
-      padding: 20px;
-      font-size: 50px;
-      text-align: center;
-      
-    }
-
-    .nav-right {
-      float: right;
-      font-family: 'Verdana', sans-serif;
-      color:white;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
 <body>
@@ -81,26 +22,63 @@
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
+      <li class = "nav-item">
+
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
+        
+    </li>
     </ul>
   </div>
 
-  {% block content %}
-      {% for item in items %}
-      <form action="{% url 'cashier_edit_cart' %}" method="POST" id="deleteForm">
-        {% csrf_token %}
-        <tr>
-          <button class = "btn-menu shadow-lg" name="delete" type="submit" form="deleteForm" value="{{ item.item_id }}" >{{ item.name }} ${{ item.price }} (DELETE)</button>
-        </tr>
-      </form>
-      {% endfor %}
-      <h1>Total Price: {{ total_price }}</h1>
-      <form action="{% url 'cashier_index' %}" method="POST" id="orderForm">
-        {% csrf_token %}
-        <button class = "btn-menu shadow-lg" name="place_order" type="submit" form="orderForm" value="True" >Place Order</button>
-      </form>
-    
-    {% endblock %}
+
+  
+  
+  <div class="container pt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8"> 
+        {% block content %}
+          <div class="text-center">
+            {% for item in items %}
+              <form action="{% url 'cashier_edit_cart' %}" method="POST" id="deleteForm">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <button class = "btn-menu shadow-lg" name="delete" type="submit" form="deleteForm" value="{{ item.item_id }}">{{ item.name }} ${{ item.price }} (DELETE)</button>
+                </div>
+              </form>
+            {% endfor %}
+            <h1>Total Price: {{ total_price }}</h1>
+            <form action="{% url 'cashier_index' %}" method="POST" id="orderForm">
+              {% csrf_token %}
+              <button class = "btn-menu shadow-lg" name="place_order" type="submit" form="orderForm" value="True">Place Order</button>
+            </form>
+          </div>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
 
 
+
+ 
+
+    <script>
+      function changeTextSize(action) {
+          var elements = document.querySelectorAll('body, button, p');
+
+          elements.forEach(function (element) {
+              var currentSize = parseInt(window.getComputedStyle(element).fontSize);
+
+              var minSize = 20;
+              var maxSize = 180;
+
+              if (action === 'increase' && currentSize < maxSize) {
+                  element.style.fontSize = (currentSize + 2) + 'px';
+              } else if (action === 'decrease' && currentSize > minSize) {
+                  element.style.fontSize = (currentSize - 2) + 'px';
+              }
+          });
+      }
+  </script>
 </body>
 </html>

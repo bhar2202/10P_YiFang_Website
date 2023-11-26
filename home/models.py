@@ -1,19 +1,6 @@
 from django.db import models
 
 
-class Augmentation(models.Model):
-    augmentation_id = models.IntegerField(primary_key=True)
-    ingredient_id = models.IntegerField(blank=True, null=True)
-    amount = models.FloatField(blank=True, null=True)
-    unit = models.CharField(max_length=30, blank=True, null=True)
-    price = models.FloatField(blank=True, null=True)
-    display = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'augmentations'
-
-
 class Employee(models.Model):
     employee_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=30, blank=True, null=True)
@@ -39,6 +26,19 @@ class Ingredient(models.Model):
         db_table = 'ingredients'
 
 
+class Augmentation(models.Model):
+    augmentation_id = models.IntegerField(primary_key=True)
+    ingredient = models.ForeignKey(Ingredient, models.RESTRICT)
+    amount = models.FloatField(blank=True, null=True)
+    unit = models.CharField(max_length=30, blank=True, null=True)
+    price = models.FloatField(blank=True, null=True)
+    display = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'augmentations'
+
+
 class Item(models.Model):
     item_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -53,8 +53,8 @@ class Item(models.Model):
 
 class ItemsIngredient(models.Model):
     pair_id = models.IntegerField(primary_key=True)
-    item_id = models.IntegerField()
-    ingredient_id = models.IntegerField()
+    item = models.ForeignKey(Item, models.RESTRICT)
+    ingredient = models.ForeignKey(Ingredient, models.RESTRICT)
     amount = models.FloatField()
     unit = models.CharField(max_length=30)
 
@@ -65,7 +65,7 @@ class ItemsIngredient(models.Model):
 
 class Order(models.Model):
     order_id = models.IntegerField(primary_key=True)
-    employee_id = models.IntegerField(blank=True, null=True)
+    employee = models.ForeignKey(Employee, models.RESTRICT)
     time = models.DateTimeField()
 
     class Meta:
@@ -75,8 +75,8 @@ class Order(models.Model):
 
 class OrdersItem(models.Model):
     pair_id = models.IntegerField(primary_key=True)
-    order_id = models.IntegerField()
-    item_id = models.IntegerField()
+    order = models.ForeignKey(Order, models.RESTRICT)
+    item = models.ForeignKey(Item, models.RESTRICT)
     info = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
@@ -86,8 +86,8 @@ class OrdersItem(models.Model):
 
 class OrdersItemsAugmentation(models.Model):
     augmentation_pair_id = models.IntegerField(primary_key=True)
-    pair_id = models.IntegerField()
-    augmentation_id = models.IntegerField()
+    pair = models.ForeignKey(OrdersItem, models.RESTRICT)
+    augmentation = models.ForeignKey(Augmentation, models.RESTRICT)
 
     class Meta:
         managed = False

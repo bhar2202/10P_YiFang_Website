@@ -13,6 +13,8 @@
 echo "Building the project..."
 python3 -m pip install -r requirements.txt
 
+echo "Current directory: $(pwd)"
+
 rm /usr/local/lib/python3.9/site-packages/apps.py
 mv /home/apps.py /usr/local/lib/python3.9/site-packages/
 

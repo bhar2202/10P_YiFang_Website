@@ -19,6 +19,11 @@ ls /usr/local/lib/python3.9/site-packages/google_translate
 rm /usr/local/lib/python3.9/site-packages/google_translate/apps.py
 mv apps.py /usr/local/lib/python3.9/site-packages/google_translate/apps.py
 
+echo "home apps.py"
+cat apps.py
+echo "django google translate apps.py"
+cat /usr/local/lib/python3.9/site-packages/google_translate/apps.py
+
 # Make migrations
 echo "Making migrations..."
 python3 manage.py makemigrations --noinput

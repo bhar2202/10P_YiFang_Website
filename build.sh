@@ -17,7 +17,7 @@ echo "Current directory: $(pwd)"
 ls
 ls /usr/local/lib/python3.9/site-packages/google_translate
 rm /usr/local/lib/python3.9/site-packages/google_translate/apps.py
-mv apps.py /usr/local/lib/python3.9/site-packages/google_translate/apps.py
+cp apps.py /usr/local/lib/python3.9/site-packages/google_translate/apps.py
 
 echo "home apps.py"
 cat apps.py
@@ -26,9 +26,9 @@ cat /usr/local/lib/python3.9/site-packages/google_translate/apps.py
 
 # Make migrations
 echo "Making migrations..."
-python3 manage.py makemigrations --noinput
-python3 manage.py migrate --noinput
+python3.9 manage.py makemigrations --noinput
+python3.9 manage.py migrate --noinput
 
 # Collect static files
 echo "Collecting static files..."
-python3 manage.py collectstatic --noinput --clear
+python3.9 manage.py collectstatic --noinput --clear

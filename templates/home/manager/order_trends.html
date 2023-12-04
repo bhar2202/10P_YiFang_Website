@@ -11,7 +11,6 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-  {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
@@ -37,7 +36,6 @@
   </div>
   <form action="{% url 'manager_order_trends' %}" method="POST" id="trendsForm">
       {% csrf_token %}
-      {% google_translate %}
     <div class = "grid-container-three-col ">
       
       <div class = "grid-item">

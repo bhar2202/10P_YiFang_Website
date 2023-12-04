@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
   {% comment %} loading in style information {% endcomment %}
@@ -8,6 +8,7 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
+  {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
@@ -18,16 +19,13 @@
     <ul class="nav ">
       <li class="nav-item">
         <a class="nav-link link-light" href="/">
-          <button class = "btn"></button>
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
       <li class = "nav-item">
-
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
-        
-    </li>
+      </li>
     </ul>
   
     {% block content %}
@@ -36,14 +34,14 @@
 
 
 {% comment %} Grid layout for buttons {% endcomment %}
-
+{% google_translate %}
   <div class="grid-container-three-col">
     {% comment %} <div class="grid-item"><a></a></div> {% endcomment %}
     <div class="grid-item"></div>
     <div class="grid-item"></div>
     <div class="grid-item"></div>
     <div class="grid-item">
-      <a href="/manager/orderhistory/">
+      <a href="/manager/order_history/">
           <button class = "btn btn-dark btn-custom shadow-lg">Order History</button>
         </a>
 
@@ -55,7 +53,7 @@
 
     </div>
     <div class="grid-item">
-      <a href="/manager/ordertrends/">
+      <a href="/manager/order_trends/">
         <button class = "btn btn-dark btn-custom shadow-lg">Order Trends</button>
       </a>
     </div>  
@@ -63,6 +61,18 @@
     <div class="grid-item">
       <a href="/manager/edit_menu/">
         <button class = "btn btn-dark btn-custom shadow-lg">Edit Menu</button>
+      </a>
+    </div>  
+
+    <div class="grid-item">
+      <a href="/manager/restock_report/">
+        <button class = "btn btn-dark btn-custom shadow-lg">Restock Report</button>
+      </a>
+    </div>
+    
+    <div class="grid-item">
+      <a href="/manager/excess_report/">
+        <button class = "btn btn-dark btn-custom shadow-lg">Excess Report</button>
       </a>
     </div>  
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
   {% comment %} loading in style information {% endcomment %}
@@ -8,6 +8,7 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
+  {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
@@ -18,23 +19,23 @@
     <ul class="nav ">
       <li class="nav-item">
         <a class="nav-link link-light" href="/">
-          <button class = "btn"></button>
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
       <li class = "nav-item">
-
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
-        
-    </li>
+      </li>
     </ul>
   
     {% block content %}
-    {% endblock %}
+
+
+
+    
   </div>
 
-
+  {% google_translate %}
   {% comment %} Container {% endcomment %}
   <div class="grid-single-col ">
 
@@ -43,31 +44,19 @@
       Order History
 
   </div>
-
+  {% for order, items, price in data %}
     <div class = "grid-item">
-        {% comment %} TODO: put data from database into text region {% endcomment %}
-        <div class="btn  btn-custom shadow-lg" style="white-space: pre-line;">
-            Item: Sample Text
-            Price: Another Line
-            Quantity: More Text Here
-            Name: Final Line
+        <div class="btn  btn-custom shadow-lg" style="white-space: pre-line;" value="order.employee_id">
+          Order ID: {{order.order_id}}
+          Date: {{order.time}}
+          Items: {{items}}
+          Total price: ${{price}}
         </div>
 
     </div>
-    {% comment %} TODO: remove this grid item {% endcomment %}
-    <div class = "grid-item">
-      {% comment %} TODO: put data from database into text region {% endcomment %}
-      <div class="btn  btn-custom shadow-lg" style="white-space: pre-line;">
-          Item: Sample Text
-          Price: Another Line
-          Quantity: More Text Here
-          Name: Final Line
-      </div>
-
+    {% endfor %}
   </div>
-
-  </div>
-
+{% endblock %}
   <script>
     function changeTextSize(action) {
         var elements = document.querySelectorAll('body, button, p');

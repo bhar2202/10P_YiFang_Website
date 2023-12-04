@@ -1,5 +1,15 @@
+<style>
+  .unclickable-button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: not-allowed;
+  }
+</style>
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>{% block title %}{% endblock %}</title>
   {% load bootstrap5 %}
@@ -7,72 +17,94 @@
   {% bootstrap_javascript %}
   {% load static %}
   {% load home_extras %}
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
+  
+  <style>
+    input[type="text"] {
+      background-color: pink;  /* Pink background */
+      border: 2px solid black; /* Black border */
+      padding: 8px;           
+      border-radius: 12px;     
+    }
+  </style>
+  {% load google_translate %}
+
 </head>
 <body>
   <div class="container-fluid bg-black">
-    <ul class="nav">
+    <ul class="nav ">
       <li class="nav-item">
-        <img src="{% static 'home/YiFangLogo.jpg' %}" width="300" height="100" alt="Image Description" class="img-fluid">
+        <a class="nav-link link-light" href="/">
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link link-light" href="/">HOME</a>
+      <li class = "nav-item">
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
       </li>
     </ul>
   </div>
+  {% google_translate %}
   {% block content %}
-  <form action="{% url 'manager_edit_menu' %}" method="POST" id="itemForm">
-    {% csrf_token %}
+  <div class="grid-container-three-col">
+    <div class="grid-item"></div>
+    <div class="grid-item">
+    <form action="{% url 'manager_edit_menu' %}" method="POST" id="itemForm">
+      {% csrf_token %}
 
-    <tr>
-      <td>
-          <p>Category: </p>
-      </td>
-      <td>
-        <input type="text" name="category" value="{{ item.category }}">
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-          <p>Item Name: </p>
-      </td>
-      <td>
-        <input type="text" name="item_name" value="{{ item.name }}">
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-          <p>Size (0=small, 1=medium, 2=large): </p>
-      </td>
-      <td>
-        <input type="text" name="size" value="{{ item.size }}">
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-          <p>Price (USD): </p>
-      </td>
-      <td>
-        <input type="text" name="price" value="{{ item.price }}">
-      </td>
-    </tr>
-  
-    <table>
-      {% for ingredient in ingredients %}
       <tr>
         <td>
-          <input type="text" name="ingredient_name" value="{{ ingredient.name }} ({{ingredient.unit}})" readonly>
+            <p>Category: </p>
         </td>
         <td>
-          <input type="text" name="ingredient_input" value="{% if ingredient.name in item_ingredients %} {{item_ingredients|keyvalue:ingredient.name}}{% else %}0{% endif %}">
+          <input type="text" name="category" value="{{ item.category }}">
         </td>
       </tr>
-      {% endfor %}
-    </table>
-    <button name="update_item" type="submit" form="itemForm" value="1" >Update Info</button>
-</form>
+
+      <tr>
+        <td>
+            <p>Item Name: </p>
+        </td>
+        <td>
+          <input type="text" name="item_name" value="{{ item.name }}">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+            <p>Size (0=small, 1=medium, 2=large): </p>
+        </td>
+        <td>
+          <input type="text" name="size" value="{{ item.size }}">
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+            <p>Price (USD): </p>
+        </td>
+        <td>
+          <input type="text" name="price" value="{{ item.price }}">
+        </td>
+      </tr>
+    
+      <table>
+        {% for ingredient in ingredients %}
+        <tr>
+          <td>
+            <input type="text" name="ingredient_name" value="{{ ingredient.name }} ({{ingredient.unit}})" readonly>
+          </td>
+          <td>
+            <input type="text" name="ingredient_input" value="{% if ingredient.name in item_ingredients %} {{item_ingredients|keyvalue:ingredient.name}}{% else %}0{% endif %}">
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      <button class = "btn btn-dark btn-custom shadow-lg" name="update_item" type="submit" form="itemForm" value="1" >Update Info</button>
+  </form>
+  </div>
+  <div class="grid-item"></div>
+</div>
 {% endblock %}
 
 </body>

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>{% block title %}{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-
+  {% load google_translate %}
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
 <body>
@@ -14,31 +15,37 @@
   <div class="container-fluid bg-black">
     <ul class="nav ">
       <li class="nav-item">
-      
-        <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        <a class="nav-link link-light" href="/">
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link link-light" href="/">HOME</a>
+      <li class = "nav-item">
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
       </li>
-      
     </ul>
   </div>
+  {% google_translate %}
   {% regroup items by category as categories %}
   {% for category in categories %}
+  <div class="grid-container-three-col">
       <tr>
           <h1>{{ category.grouper }}</h1>
           {% for item in category.list %}
               <tr>
                   <form action="{% url 'manager_add_item' %}" method="POST" id="itemForm">
                       {% csrf_token %}
-                      <button name="item" type="submit" form="itemForm" value="{{ item.name }},{{ item.size }}" >{{ item.name }} | Size: {{ item.size }}</button>
-                  </form>
+                      <div class="grid-item">
+                        <button class = "btn-menu btn-dark shadow-lg" name="item" type="submit" form="itemForm" value="{{ item.name }},{{ item.size }}" >{{ item.name }} | Size: {{ item.size }}</button>
+                      </div>
+                    </form>
               </tr>
           {% endfor %}
       </tr>
+    </div>
   {% endfor %}
   <a href="/manager/add_item/">
-    <button>Add Item</button>
+    <button class = "btn-menu btn-dark shadow-lg" >Add Item</button>
   </a>
   
   </body>

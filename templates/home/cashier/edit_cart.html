@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
   {% comment %} loading in style information {% endcomment %}
@@ -8,6 +8,7 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
+  {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
@@ -18,19 +19,16 @@
     <ul class="nav ">
       <li class="nav-item">
         <a class="nav-link link-light" href="/">
-          <button class = "btn"></button>
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
       <li class = "nav-item">
-
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
-        
-    </li>
+      </li>
     </ul>
   </div>
-
+  {% google_translate %}
 
   
   
@@ -40,14 +38,14 @@
         {% block content %}
           <div class="text-center">
             {% for item in items %}
-              <form action="{% url 'cashier_edit_cart' %}" method="POST" id="deleteForm">
+              <form action="{% url 'cashier_index' %}" method="POST" id="deleteForm">
                 {% csrf_token %}
                 <div class="mb-3">
                   <button class = "btn-menu shadow-lg" name="delete" type="submit" form="deleteForm" value="{{ item.item_id }}">{{ item.name }} ${{ item.price }} (DELETE)</button>
                 </div>
               </form>
             {% endfor %}
-            <h1>Total Price: {{ total_price }}</h1>
+            <h1>Total Price: ${{ total_price }}</h1>
             <form action="{% url 'cashier_index' %}" method="POST" id="orderForm">
               {% csrf_token %}
               <button class = "btn-menu shadow-lg" name="place_order" type="submit" form="orderForm" value="True">Place Order</button>
@@ -57,10 +55,9 @@
       </div>
     </div>
   </div>
-
-
-
- 
+  {% if message %}
+    <p>{{ message }}</p>
+  {% endif %}
 
     <script>
       function changeTextSize(action) {

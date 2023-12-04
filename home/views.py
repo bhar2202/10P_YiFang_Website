@@ -2,14 +2,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from datetime import datetime
 import requests
-from django.db.models import Max
+from django.db.models import Count, Sum
 from home.models import Ingredient, Item, ItemsIngredient, Augmentation, Order, OrdersItem, OrdersItemsAugmentation
+from django.shortcuts import render
 
 # weather API
 forecast = requests.get("https://api.weather.gov/gridpoints/HGX/29,134/forecast").json()['properties']['periods'][0]
 #return HttpResponse(template.render({'forecast': forecast}, request))
-from django.urls import reverse
-from django.shortcuts import render
 
 # home page, diverges into cashier / manager.
 def index(request):
@@ -20,7 +19,80 @@ def index(request):
 # home page of cashier - includes menu items.
 def cashier_index(request):
     if request.method == 'POST':
+
+        #delete button functionality
+        if request.POST.get("delete"):
+            print("delete")
+            item_to_delete_id = request.POST.get("delete")
+            print("hi",request.session['order_items'])
+            updated_order_items = []
+            deleted = False
+
+            for item in request.session.get('order_items', []):
+                if item.split(',')[0] == item_to_delete_id and not deleted:
+                    deleted = True  
+                    continue  
+                updated_order_items.append(item)
+
+            request.session['order_items'] = updated_order_items
+            total_price = 0
+            for item in request.session['order_items']:
+                item_id = item.split(',')[0]
+                total_price += Item.objects.get(item_id=item_id).price
+                for augmentation in request.session.get('order_item_augs', []):
+                    if augmentation[0] == item:
+                        total_price += Augmentation.objects.get(augmentation_id=augmentation[1]).price
+            
+            request.session['total_price'] = total_price
+            request.session.modified = True
+            print("final",request.session['order_items'])
+
+            item_ids_in_session = [item.split(',')[0] for item in request.session['order_items']]
+            items = Item.objects.filter(item_id__in=item_ids_in_session).order_by('category')
+            context = {
+                'forecast': forecast,
+                'items': items,
+                'total_price': total_price
+            }
+
+            template = loader.get_template("home/cashier/edit_cart.html")
+            return HttpResponse(template.render(context, request))
+
         if request.POST.get("place_order"):
+            #checking to see if there are enough ingredients to place an order
+            total_ingredients_required = {}
+
+            for item in request.session.get('order_items', []):
+                itemid = item.split(',')[0]
+                for item_ingredient in ItemsIngredient.objects.filter(item_id=itemid):
+                    total_ingredients_required[item_ingredient.ingredient_id] = (
+                        total_ingredients_required.get(item_ingredient.ingredient_id, 0) 
+                        + item_ingredient.amount
+                    )
+
+            ignore_augmentation_ids = [20, 21, 22, 23, 24] # Ice
+            for augmentation in request.session.get('order_item_augs', []):
+                if augmentation[0] == item and augmentation[1] not in ignore_augmentation_ids:
+                    augmentation_obj = Augmentation.objects.get(augmentation_id=augmentation[1])
+                    total_ingredients_required[augmentation_obj.ingredient_id] = (
+                        total_ingredients_required.get(augmentation_obj.ingredient_id, 0) 
+                        + augmentation_obj.amount
+                    )
+            item_ids_in_session = [item.split(',')[0] for item in request.session['order_items']]
+            items = Item.objects.filter(item_id__in=item_ids_in_session).order_by('category')
+            for ingredient_id, required_amount in total_ingredients_required.items():
+                ingredient = Ingredient.objects.get(ingredient_id=ingredient_id)
+                if ingredient.amount < required_amount:
+                    total_price=0
+                    context = {
+                        'forecast': forecast,
+                        'items': items,
+                        'total_price': total_price,
+                        'message': 'Cannot place order due to insufficient ingredients.',
+                    }
+                    template = loader.get_template("home/cashier/edit_cart.html")
+                    return HttpResponse(template.render(context, request))
+
             order = Order(len(Order.objects.all()), None, datetime.now())
             order.save()
             if 'order_items' not in request.session:
@@ -44,6 +116,34 @@ def cashier_index(request):
                             augmentation[1]
                         )
                         order_item_aug.save()
+                
+                for item in request.session['order_items']:
+                    itemid = item.split(',')[0]
+                    print("itemid:", itemid) #getting the correct item id
+                    ingredients_used = ItemsIngredient.objects.filter(item_id=itemid)
+                    print("ingre:", ingredients_used)
+                    for ingredient_used in ingredients_used:
+                        print("Ingredient ID:", ingredient_used.ingredient_id)
+                        print("Amount used:", ingredient_used.amount)
+                        ingredient = Ingredient.objects.get(ingredient_id=ingredient_used.ingredient_id)
+                        print(ingredient.amount)
+                        ingredient.amount -= ingredient_used.amount
+                        ingredient.save()
+
+
+                ignore_augmentation_ids = [20,21,22,23,24] #ice
+                for augmentation in request.session['order_item_augs']:
+                    print("order_item_augs:",request.session['order_item_augs'])
+                    if augmentation[0] == item:
+                        print("augmentation[0]:",augmentation[0],item)
+                        aug_id = augmentation[1]
+                        print("aug_id",aug_id)
+                        if aug_id in ignore_augmentation_ids:
+                            continue
+                        augmentation_obj = Augmentation.objects.get(augmentation_id=aug_id)
+                        ingredient = Ingredient.objects.get(ingredient_id=augmentation_obj.ingredient_id)
+                        ingredient.amount -= augmentation_obj.amount
+                        ingredient.save()
             request.session.flush()
         else:
             ice_level = int(request.POST.get('ice'))
@@ -73,7 +173,7 @@ def cashier_index(request):
     items = Item.objects.order_by('category').all()
     context = {
         'forecast': forecast,
-        'items': items
+        'items': items,
     }
     return HttpResponse(template.render(context, request))
 
@@ -115,6 +215,17 @@ def cashier_tea_specifications(request):
 def manager_inventory(request):
     template = loader.get_template("home/manager/inventory.html")
     ingredients = Ingredient.objects.order_by('name').all()
+    context = {
+        'forecast': forecast,
+        'ingredients': ingredients
+    }
+    return HttpResponse(template.render(context, request))
+
+# View inventory items whose stock is below 20% of fill level
+def manager_restock_report(request):
+    template = loader.get_template("home/manager/restock_report.html")
+    ingredient_rows = Ingredient.objects.order_by('name').all()
+    ingredients = [ingredient for ingredient in ingredient_rows if ingredient.amount / ingredient.fill_level < 0.2]
     context = {
         'forecast': forecast,
         'ingredients': ingredients
@@ -167,53 +278,99 @@ def manager_index(request):
 # View past orders.
 def manager_order_history(request):
     template = loader.get_template("home/manager/order_history.html")
-    return HttpResponse(template.render({}, request))
+    
+    orders = Order.objects.order_by('-order_id').all()
+    orders = orders[:100]
+    prices = []
+    items_strings = []
+    for order in orders:
+        items = OrdersItem.objects.filter(order_id=order.order_id)
+        item_string = ""
+        total_price = 0.0
+        for obj in items:
+            item_string += obj.item.name + ", "
+            # ordersAug = OrdersItemsAugmentation.objects.filter(order_id=order.order_id,item_id=obj.item.item_id)
+            total_price += obj.item.price
+
+        item_string = item_string[:-2] #removes last ", " 
+        items_strings.append(item_string)
+        prices.append(total_price)
+
+        # items += OrdersItem.objects.filter(order_id=orders[i].order_id)
+
+    # employees = []
+    # for order in orders:
+    #         employees.append(Employee.objects.get(employee_id=order.employee.employeeID).name)
+
+    data = zip(orders, items_strings, prices)
+
+    context = {
+        'data':data,
+    }
+    return HttpResponse(template.render(context, request))
+
+def manager_excess_report(request):
+    if request.method == "POST":
+        start_time = request.POST.get("start_time")
+        end_time = request.POST.get("end_time")
+
+        initial_inventory = Ingredient.objects.all().values("ingredient_id", "name", "amount")
+
+        ingredient_usage = OrdersItem.objects.filter(
+            order__time__range=[start_time, end_time]
+        ).values('item__itemsingredient__ingredient_id').annotate(
+            total_used=Sum('item__itemsingredient__amount')
+        ).order_by()
+
+        excess_inventory = []
+        for ingredient in initial_inventory:
+            usage = next((usage for usage in ingredient_usage if usage["item__itemsingredient__ingredient_id"] == ingredient["ingredient_id"]), None)
+            if usage:
+                percentage_used = (usage["total_used"] / ingredient["amount"]) * 100
+                if percentage_used < 10:
+                    excess_inventory.append(ingredient["name"])
+
+        context = {'excess_inventory': excess_inventory}
+        return render(request, 'home/manager/excess_report.html', context)
+    else:
+        return render(request, 'home/manager/excess_report.html')
 
 # View order trends.
 def manager_order_trends(request):
-    template = loader.get_template("home/manager/order_trends.html")
-    return HttpResponse(template.render({}, request))
-
-# View order trends graph.
-def manager_order_trends_graph(request):
-    template = loader.get_template("home/manager/order_trends_graph.html")
-    return HttpResponse(template.render({}, request))
-
-
-def cashier_teaspecifications(request):
     if request.method == "POST":
-        ice_level = request.POST.get('options')
-        sweetness_level = request.POST.get('sweetness')
-        milk_level = request.POST.get('milk')
-        milk_type = request.POST.get('milktype')
-        toppings = request.POST.getlist('toppings')
+        item = request.POST.get("item")
+        start = datetime.strptime(request.POST.get("start"), "%Y-%m-%dT%H:%M")
+        end = datetime.strptime(request.POST.get("end"), "%Y-%m-%dT%H:%M")
+        interval = (end - start) / 15
+        current = start
+        sales_data = {}
+        while current < end:
+            item_sales = OrdersItem.objects.filter(order__time__gte=current, order__time__lte=(current+interval), item__name=item).aggregate(Sum("item__price"))
+            augmentation_sales = OrdersItemsAugmentation.objects.filter(pair__order__time__gte=current, pair__order__time__lte=(current+interval), pair__item__name=item).aggregate(Sum("augmentation__price"))
+            sales_data[current] = 0
+            if item_sales:
+                sales_data[current] += item_sales["item__price__sum"] if item_sales["item__price__sum"] else 0
+            if augmentation_sales:
+                sales_data[current] += augmentation_sales["augmentation__price__sum"] if augmentation_sales["augmentation__price__sum"] else 0
+            current += interval
+        labels = [label for label in sales_data]
+        values = [sales_data[label] for label in sales_data]
+        start = start.strftime("%Y-%m-%d %H:%M")
+        end = end.strftime("%Y-%m-%d %H:%M")
+    else:
+        start = end = "2022-12-01 00:00"
+        labels = values = []
+    items = Item.objects.values("name").annotate(dcount=Count("name")).all()
 
-        # Store the information in the session to be retrieved in the next view
-        request.session['tea_details'] = {
-            'ice_level': ice_level,
-            'sweetness_level': sweetness_level,
-            'milk_level': milk_level,
-            'milk_type': milk_type,
-            'toppings': toppings
-        }
-        
-        return HttpResponseRedirect(reverse('cashier_editcart'))
-
-    template = loader.get_template("home/cashier/tea_specifications.html")
-    return HttpResponse(template.render({}, request))
-
-def cashier_editcart(request):
-    tea_details = request.session.get('tea_details', {})
-
+    template = loader.get_template("home/manager/order_trends.html")
     context = {
-        'ice_level': tea_details.get('ice_level'),
-        'sweetness_level': tea_details.get('sweetness_level'),
-        'milk_level': tea_details.get('milk_level'),
-        'milk_type': tea_details.get('milk_type'),
-        'toppings': tea_details.get('toppings', [])
+        "forecast": forecast,
+        "start": start,
+        "end": end,
+        "items": items,
+        "labels": labels,
+        "values": values,
     }
-
-    template = loader.get_template("home/cashier/editcart.html")
     return HttpResponse(template.render(context, request))
 
 def menu(request):
@@ -317,28 +474,8 @@ def inventory(request):
     template = loader.get_template("home/inventory.html")
     return HttpResponse(template.render({}, request))
 
-def item_filllevel(request):
-    template = loader.get_template("home/itemfilllevel.html")
-    return HttpResponse(template.render({}, request))
-
-def manager_startscreen(request):
+def manager_start_screen(request):
     template = loader.get_template("home/manager/index.html")
-    return HttpResponse(template.render({}, request))
-
-def order_history(request):
-    template = loader.get_template("home/orderhistory.html")
-    return HttpResponse(template.render({}, request))
-
-def order_trends(request):
-    template = loader.get_template("home/ordertrends.html")
-    return HttpResponse(template.render({}, request))
-
-def order_trendsgraph(request):
-    template = loader.get_template("home/ordertrendsgraph.html")
-    return HttpResponse(template.render({}, request))
-
-def manager_login(request):
-    template = loader.get_template("home/managerlogin.html")
     return HttpResponse(template.render({}, request))
 
 # Modify ingredient specification within a menu item by clicking on it.
@@ -417,9 +554,5 @@ def manager_add_item(request):
 
 
     return HttpResponse(template.render(context, request))
-
-def cashier_login(request):
-    template = loader.get_template("home/cashierlogin.html")
-    return HttpResponse(template.render({}, request))
 
 

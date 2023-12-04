@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <title>{% block title %}Inventory{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
-  {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
 </head>
@@ -15,19 +14,26 @@
     <ul class="nav ">
       <li class="nav-item">
         <a class="nav-link link-light" href="/">
+          <button class = "btn"></button>
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
       <li class = "nav-item">
+
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
         <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
-      </li>
+        
+    </li>
     </ul>
   
     
   </div>
-  {% google_translate %}
   {% block content %}
+  <div class="grid-single-col ">
+    <div class = "grid-item">
+      Restock Report
+    </div>
+  </div>
   <div class="grid-container-three-col">
     {% for ingredient in ingredients %}
     

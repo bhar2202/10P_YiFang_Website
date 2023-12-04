@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% comment %} loading in style information {% endcomment %}
+  <title>{% block title %}Excess Reports{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
+
+</head>
+<body>
+
+  {% comment %} -------Navbar------ {% endcomment %}
+  <div class="container-fluid bg-black">
+    <ul class="nav ">
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/">
+          <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
+        </a>
+      </li>
+      <li class = "nav-item">
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('increase')">+ Text Size</button>
+        <button class = "btn btn-dark btn-custom shadow-lg" onclick="changeTextSize('decrease')">- Text Size</button>
+      </li>
+    </ul>
+  
+    {% block content %}
+    {% endblock %}
+  </div>
+  <form method="POST">
+        {% csrf_token %}
+
+        <div class = "grid-container-three-col ">
+            <div class = "grid-item"></div>
+            <div class = "grid-item"></div>
+            <div class = "grid-item">
+              <div class = "textbox">
+                <input type="datetime-local" name="start_time" required>
+              </div>
+            </div>
+            <div class = "grid-item">
+        
+              {% comment %} <div class = "colored-box"> {% endcomment %}
+                <div class = "btn btn-custom shadow-lg">See Trends From: </div>
+              {% comment %} </div> {% endcomment %}
+              {% comment %} <div class = "colored-box">
+                <div class = "box-text>See Trends From: </div>
+              </div> {% endcomment %}
+        
+            </div>
+            <div class = "grid-item"></div>
+            <div class = "grid-item">
+        
+              <p>
+                TO
+              </p>
+        
+            </div>
+            <div class = "grid-item"></div>
+            <div class = "grid-item"></div>
+            <div class = "grid-item">
+              <div class = "textbox">
+                <input type="datetime-local" name="end_time" required>
+              </div>
+        
+            </div>
+          </div>
+        
+        
+          <div class = "grid-container-three-col">
+            <div class = "grid-item"></div>
+            <div class = "grid-item">
+              
+                <button class = "btn btn-dark btn-custom shadow-lg">GO</button>
+        
+          </div>
+            <div class = "grid-item"></div>
+          </div>
+    </form>
+
+    {% if excess_inventory %}
+        <ul>
+        {% for item in excess_inventory %}
+            <li>{{ item }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+
+
+  
+
+
+
+  <script>
+    function changeTextSize(action) {
+        var elements = document.querySelectorAll('body, button, p');
+
+        elements.forEach(function (element) {
+            var currentSize = parseInt(window.getComputedStyle(element).fontSize);
+
+            var minSize = 20;
+            var maxSize = 180;
+
+            if (action === 'increase' && currentSize < maxSize) {
+                element.style.fontSize = (currentSize + 2) + 'px';
+            } else if (action === 'decrease' && currentSize > minSize) {
+                element.style.fontSize = (currentSize - 2) + 'px';
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -10,3 +10,4 @@ pytz==2023.3.post1
 requests==2.31.0
 urllib3<=1.26.15
 googletrans==4.0.0-rc1
+django-google-translate==1.1

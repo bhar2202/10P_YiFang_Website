@@ -13,6 +13,9 @@
 echo "Building the project..."
 python3 -m pip install -r requirements.txt
 
+rm /usr/local/lib/python3.9/site-packages/apps.py
+mv /home/apps.py /usr/local/lib/python3.9/site-packages/
+
 # Make migrations
 echo "Making migrations..."
 python3 manage.py makemigrations --noinput

@@ -17,7 +17,7 @@ echo "Current directory: $(pwd)"
 ls
 ls /usr/local/lib/python3.9/site-packages/google_translate
 rm /usr/local/lib/python3.9/site-packages/google_translate/apps.py
-mv apps.py /usr/local/lib/python3.9/site-packages/google_translate
+mv apps.py /usr/local/lib/python3.9/site-packages/google_translate/apps.py
 
 # Make migrations
 echo "Making migrations..."

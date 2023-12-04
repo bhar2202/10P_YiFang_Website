@@ -20,5 +20,4 @@ urlpatterns = [
     path("manager/excess_report/", views.manager_excess_report, name="manager_excess_report"),
     path("manager/edit_menu/", views.manager_edit_menu, name="manager_edit_menu"),
     path("manager/add_item/", views.manager_add_item, name="manager_add_item")
-
 ]

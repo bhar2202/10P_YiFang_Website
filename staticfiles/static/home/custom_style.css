@@ -1,0 +1,130 @@
+
+/* CSS for central navigation buttons */
+/* .textbox{
+  background-color: pink;
+  font-size:50px;
+} */
+
+
+
+.btn-custom {
+  background-color: pink; /* Change this to your desired color */
+  border-color: black;
+  border-width: 3px;
+  font-size: 50px;
+  color: #000000; /* Text color */
+  font-family: 'Verdana', sans-serif;
+  font-weight:bold;
+  border-radius: 20px;
+  /* box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.2); */
+  /* box-shadow: inset 0px 0px 10px 0px #c43737; */
+  /* box-shadow: 50px 50px 100px rgba(0, 0, 0, 1); */
+}
+
+.btn-custom-small {
+background-color: pink; /* Change this to your desired color */
+border-color: black;
+border-width: 3px;
+font-size: 20px;
+color: #000000; /* Text color */
+font-family: 'Verdana', sans-serif;
+font-weight:bold;
+border-radius: 20px;
+/* box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.2); */
+/* box-shadow: inset 0px 0px 10px 0px #c43737; */
+/* box-shadow: 50px 50px 100px rgba(0, 0, 0, 1); */
+}
+
+.btn-menu {
+background-color: pink; /* Change this to your desired color */
+border-color: black;
+border-width: 3px;
+font-size: 25px;
+color: #000000; /* Text color */
+font-family: 'Verdana', sans-serif;
+font-weight:bold;
+height: 50px;
+border-radius: 20px;
+margin: 0;
+/* box-shadow: inset 0px 0px 100px rgba(0, 0, 0, 0.2); */
+/* box-shadow: inset 0px 0px 10px 0px #c43737; */
+/* box-shadow: 50px 50px 100px rgba(0, 0, 0, 1); */
+}
+
+.text-box-menu {
+background-color: pink; /* Same as btn-menu */
+border: 3px solid black; /* Same as btn-menu */
+font-size: 30px; /* Same as btn-menu */
+color: #000000; /* Same as btn-menu */
+font-family: 'Verdana', sans-serif; /* Same as btn-menu */
+font-weight: bold; /* Same as btn-menu */
+height: 50px; /* Adjust if needed */
+border-radius: 5px; /* Same as btn-menu */
+margin: 0; /* Same as btn-menu */
+padding: 10px; /* Adjust as needed */
+/* Add more styles if needed */
+}
+
+/* Sytle for grid containers */
+.grid-single-col{
+display: grid;
+grid-template-columns: auto;
+padding: 50px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 50px;
+}
+
+.grid-container-three-col {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 30px;
+}
+
+.grid-container-five-col {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto  ;
+  padding: 50px;
+}
+
+.grid-item {
+
+padding: 20px;
+font-size: 50px;
+text-align: center;
+
+}
+
+.nav-right {
+float: right;
+font-family: 'Verdana', sans-serif;
+color:white;
+}
+
+/* .text-center{
+  text-align: center;
+  font-family: 'Verdana', sans-serif;
+font-size: 80px;
+color: white; /* Text color */
+
+/*  
+.colored-box {
+  width: 2000px; 
+  height: 1000px; 
+  background-color: #3498db; 
+  border: 2px solid #000; 
+  border-radius: 10px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}*/
+
+/* .box-text {
+color: #fff; 
+font-size: 2px; 
+font-weight: bold; 
+text-align: center; 
+} */

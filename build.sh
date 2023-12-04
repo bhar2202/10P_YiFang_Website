@@ -15,8 +15,8 @@ python3 -m pip install -r requirements.txt
 
 echo "Current directory: $(pwd)"
 ls
-rm /usr/local/lib/python3.9/site-packages/apps.py
-mv /home/apps.py /usr/local/lib/python3.9/site-packages/
+rm /usr/local/lib/python3.9/site-packages/google_translate/apps.py
+mv apps.py /usr/local/lib/python3.9/site-packages/google_translate
 
 # Make migrations
 echo "Making migrations..."

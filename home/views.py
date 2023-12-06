@@ -552,9 +552,7 @@ def manager_edit_menu(request):
     if redirect_logged_out(request):
         return redirect_logged_out(request)
     if request.method == 'POST':
-        if request.POST.get('category'):
-            request.session['category'] = request.POST.get('category')
-        else:
+        if request.POST.get('update_item'):
             updated_amounts = [float(i) for i in request.POST.getlist('ingredient_input')]
             item_id = request.session['item_id']
             item = Item.objects.get(item_id = item_id)
@@ -583,6 +581,8 @@ def manager_edit_menu(request):
             request.session.flush()
             request.session['logged_in'] = True
             request.modified = True
+        elif request.POST.get('category'):
+            request.session['category'] = request.POST.get('category')
     else:
         request.session.flush()
         request.session['logged_in'] = True

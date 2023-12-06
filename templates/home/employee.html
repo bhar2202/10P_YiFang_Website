@@ -11,6 +11,17 @@
   {% load google_translate %}
 <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
+<style>
+    .black-button {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
 </head>
 <body>
 
@@ -18,7 +29,7 @@
 <div class="container-fluid bg-black">
   <ul class="nav ">
     <li class="nav-item">
-      <a class="nav-link link-light" href="/">
+      <a class="nav-link link-light" href="/employee">
         <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
       </a>
     </li>
@@ -33,6 +44,9 @@
   {% block content %}
   {% endblock %}
 </div>
+    <a href="/logout/">
+        <button class = "black-button">Log Out</button>
+    </a>
   <div class="grid-container-three-col">
     <div class = "grid-item"></div>
     <div class = "grid-item">
@@ -53,34 +67,17 @@
       
 
       <div class="grid-item">
-        <a href="/accounts/login/">
-          <button class = "btn btn-dark btn-custom shadow-lg">Employee Login</button>
-        </a>
-      </div>
-
-      <!-- <div class="grid-item">
         <a href="/cashier/">
-          <button class = "btn btn-dark btn-custom shadow-lg">Cashier Login</button>
+          <button class = "btn btn-dark btn-custom shadow-lg">Cashier</button>
         </a>
-      </div> -->
+      </div>
 
-      <!-- <div class=" grid-item">
+      <div class=" grid-item">
         <a  href="/manager/">
-          <button class = "btn btn-dark btn-custom shadow-lg">Manager Login</button>
-        </a>
-      </div> -->
-
-      <div class="grid-item">
-        <a href="/menu/">
-          <button class = "btn btn-dark btn-custom shadow-lg">Menu</button>
+          <button class = "btn btn-dark btn-custom shadow-lg">Manager</button>
         </a>
       </div>
 
-      <div class="grid-item">
-        <a href="/customer/">
-          <button class = "btn btn-dark btn-custom shadow-lg">Customer View</button>
-        </a>
-      </div>
       <!-- <div class="grid-item"></div>
       <div class="grid-item"></div>  
       <div class="grid-item"></div>

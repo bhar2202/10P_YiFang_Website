@@ -8,8 +8,156 @@
   {% load static %}
   {% load home_extras %}
   {% load google_translate %}
-  <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
+  <style>
+    /* Sytle for grid containers */
+    .grid-single-col{
+      display: grid;
+      grid-template-columns: auto;
+      padding: 50px;
+    }
+    
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 50px;
+      }
+    
+      .grid-container-three-col {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        padding: 10px;
+      }
+    
+      .grid-container-five-col {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto  ;
+        padding: 50px;
+      }
+    
+    .grid-item {
+    
+      padding: 30px;
+      font-size: 40px;
+      text-align: center;
+      
+    }
+    
+    .nav-right {
+      float: right;
+      font-family: 'Verdana', sans-serif;
+      color:white;
+    }
+    
+    .btn-custom {
+        background-color: pink;
+        border-color: black;
+        border-width: 3px;
+        font-size: 50px;
+        color: #000000;
+        font-family: 'Verdana', sans-serif;
+        font-weight: bold;
+        border-radius: 20px;
+        min-width: 100px; /* Minimum width */
+        padding: 10px 20px; /* Padding */
+        display: inline-block; /* Flexible size */
+    }
+    
+    .btn-custom-small {
+        background-color: pink;
+        border-color: black;
+        border-width: 3px;
+        font-size: 20px;
+        color: #000000;
+        font-family: 'Verdana', sans-serif;
+        font-weight: bold;
+        border-radius: 20px;
+        min-width: 80px; /* Minimum width */
+        padding: 5px 10px; /* Padding */
+        display: inline-block; /* Flexible size */
+    }
+    
+    .btn-submit {
+        background-color: rgb(14, 125, 185);
+        border-color: black;
+        border-width: 3px;
+        font-size: 20px;
+        color: #000000;
+        font-family: 'Verdana', sans-serif;
+        font-weight: bold;
+        border-radius: 20px;
+        min-width: 80px; /* Minimum width */
+        padding: 5px 10px; /* Padding */
+        display: inline-block; /* Flexible size */
+    }
+    
+    .btn-menu {
+        background-color: pink;
+        border-color: black;
+        border-width: 3px;
+        font-size: 2vw; /* Responsive font size */
+        color: #000000;
+        font-family: 'Verdana', sans-serif;
+        font-weight: bold;
+        min-height: 50px; /* Minimum height */
+        border-radius: 20px;
+        margin: 0;
+        padding: 10px 20px; /* Adequate padding */
+        white-space: normal; /* Allow text wrapping */
+        width: auto; /* Flexible width */
+        display: inline-block; /* Allows the button to grow with content */
+    }
+    
+    .text-box-menu {
+      background-color: pink;
+      border-color: black;
+      border: 3px solid black; /* Same as btn-menu */
+      border-width: 3px;
+      font-size: 2vw; /* Responsive font size */
+      color: #000000;
+      font-family: 'Verdana', sans-serif;
+      font-weight: bold;
+      min-height: 50px; /* Minimum height */
+      border-radius: 5px;
+      margin: 0;
+      padding: 10px 20px; /* Adequate padding */
+      white-space: normal; /* Allow text wrapping */
+      width: auto; /* Flexible width */
+      display: inline-block; /* Allows the button to grow with content */
+    }
 
+        
+    .text-box-price {
+      background-color: rgba(232, 224, 106, 0.866); /* Same as btn-menu */
+      border-color: black;
+      border-width: 3px;
+      border: 3px solid black; /* Same as btn-menu */
+      font-size: 2vw; /* Responsive font size */
+      color: #000000;
+      font-family: 'Verdana', sans-serif;
+      font-weight: bold;
+      min-height: 50px; /* Minimum height */
+      border-radius: 5px;
+      margin: 0;
+      padding: 10px 20px; /* Adequate padding */
+      white-space: normal; /* Allow text wrapping */
+      width: auto; /* Flexible width */
+      display: inline-block; /* Allows the button to grow with content */
+    }
+    /* Media Queries for different screen sizes */
+    @media screen and (max-width: 768px) {
+        .btn-menu, .btn-custom, .btn-custom-small, .btn-submit .text-box-menu .text-box-price{
+            font-size: 4vw; /* Adjust font size for smaller screens */
+        }
+    }
+    
+    @media screen and (max-width: 480px) {
+        .btn-menu, .btn-custom, .btn-custom-small, .btn-submit .text-box-menu .text-box-price{
+            font-size: 5vw; /* Larger font size for very small screens */
+            padding: 8px 16px;
+        }
+    }
+    
+    </style>
 
 </head>
 <body>
@@ -33,42 +181,59 @@
   </div>
 
   {% google_translate %}
-  <div class="grid-single-col">
-    
-</div>
-  {% regroup items by category as categories %}
-  {% for category in categories %}
+  <h1>Categories</h1>
+  <div class="grid-container-three-col">
+    {% for category in categories %}
       <tr>
-          <h1>{{ category.grouper }}</h1>
-          <div class="grid-container-three-col">
-          {% for item in category.list %}
-          
-              <tr>
-                  <div class="grid-item">
-                    <h1 class="text-box-menu shadow-lg" style="margin-bottom: 75px;">
-                      {{ item.name }}
-                      {% if item.size == 0 %}
-                        S
-                      {% elif item.size == 1 %}
-                        M
-                      {% else %}
-                        L
-                      {% endif %}
-                    </h1>
-                    <img src="/static/home/{{images|keyvalue:item.item_id}}" width = "200" height = "200" alt="Image Description">
-                    <h1 class="text-box-menu shadow-lg">${{ item.price }}</h1>
-                  </div>
-                  {% if forloop.counter|divisibleby:3 and not forloop.last %}  
-                    </div><div class="grid-container-three-col">
-                  {% endif %}
-              </tr>
-          {% endfor %}
-        </div>
+        <form action="{% url 'menu' %}" method="POST" id="categoryForm">
+          {% csrf_token %}
+          <div class="grid-item">
+            <button class = "btn-menu shadow-lg" name="category" type="submit" form="categoryForm" value="{{ category }}" >
+              {{ category }}
+            </button>
+          </div>
+        </form>
       </tr>
-  {% endfor %}
-  
-
-  
-
-  </body>
+    {% endfor %}
+  </div>
+  <h1>Items</h1>
+  <div class="grid-container-three-col">
+    {% for item in items %}
+        <tr>
+            <div class="grid-item">
+              <h1 class = "text-box-menu shadow-lg">
+                {{ item.name }}
+                {% if item.size == 0 %}
+                  S
+                {% elif item.size == 1 %}
+                  M
+                {% else %}
+                  L
+                {% endif %}
+              </h1>
+              <img src="/static/home/{{images|keyvalue:item.item_id}}" width = "200" height = "200" alt="Image Description"/>
+              <h1 class="text-box-menu shadow-lg">${{ item.price }}</h1>
+            </div>
+              {% if forloop.counter|divisibleby:3 and not forloop.last %}  
+          </div><div class="grid-container-three-col">
+            {% endif %}
+        </tr>
+    {% endfor %}
+  </div>
+  <script>
+    function changeTextSize(action) {
+        var elements = document.querySelectorAll('body, button, p, h1, tr, div, img');
+        elements.forEach(function (element) {
+            var currentSize = parseInt(window.getComputedStyle(element).fontSize);
+            var minSize = 20;
+            var maxSize = 150;
+            if (action === 'increase' && currentSize < maxSize) {
+                element.style.fontSize = (currentSize + 2) + 'px';
+            } else if (action === 'decrease' && currentSize > minSize) {
+                element.style.fontSize = (currentSize - 2) + 'px';
+            }
+        });
+    }
+</script>
+</body>
 </html>

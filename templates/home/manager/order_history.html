@@ -11,6 +11,17 @@
   {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
+  <style>
+    .black-button {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
 </head>
 <body>
 
@@ -18,7 +29,7 @@
   <div class="container-fluid bg-black">
     <ul class="nav ">
       <li class="nav-item">
-        <a class="nav-link link-light" href="/">
+        <a class="nav-link link-light" href="/employee">
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
@@ -39,6 +50,10 @@
   {% comment %} Container {% endcomment %}
   <div class="grid-single-col ">
 
+    <a href="/accounts/logout/">
+      <button class = "black-button">Log Out</button>
+    </a>
+
     <div class = "grid-item">
       
       Order History
@@ -46,34 +61,31 @@
   </div>
   {% for order, items, price in data %}
     <div class = "grid-item">
-        <div class="btn  btn-custom shadow-lg" style="white-space: pre-line;" value="order.employee_id">
-          Order ID: {{order.order_id}}
-          Date: {{order.time}}
-          Items: {{items}}
-          Total price: ${{price}}
+        <div class="btn  btn-custom shadow-lg" value="order.employee_id">
+          <p>Order ID: {{order.order_id}}</p>
+          <p>Date: {{order.time}} </p>
+          <p> {{items}} </p>
+          <p>Total price: ${{price}} </p>
         </div>
 
     </div>
     {% endfor %}
   </div>
 {% endblock %}
-  <script>
-    function changeTextSize(action) {
-        var elements = document.querySelectorAll('body, button, p');
-
-        elements.forEach(function (element) {
-            var currentSize = parseInt(window.getComputedStyle(element).fontSize);
-
-            var minSize = 20;
-            var maxSize = 180;
-
-            if (action === 'increase' && currentSize < maxSize) {
-                element.style.fontSize = (currentSize + 2) + 'px';
-            } else if (action === 'decrease' && currentSize > minSize) {
-                element.style.fontSize = (currentSize - 2) + 'px';
-            }
-        });
-    }
+<script>
+  function changeTextSize(action) {
+      var elements = document.querySelectorAll('body, button, p, h1, tr, div, img');
+      elements.forEach(function (element) {
+          var currentSize = parseInt(window.getComputedStyle(element).fontSize);
+          var minSize = 20;
+          var maxSize = 150;
+          if (action === 'increase' && currentSize < maxSize) {
+              element.style.fontSize = (currentSize + 2) + 'px';
+          } else if (action === 'decrease' && currentSize > minSize) {
+              element.style.fontSize = (currentSize - 2) + 'px';
+          }
+      });
+  }
 </script>
 </body>
 </html>

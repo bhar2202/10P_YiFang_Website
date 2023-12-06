@@ -18,7 +18,7 @@
   <div class="container-fluid bg-black">
     <ul class="nav ">
       <li class="nav-item">
-        <a class="nav-link link-light" href="/employee">
+        <a class="nav-link link-light" href="/">
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
@@ -38,7 +38,7 @@
         {% block content %}
           <div class="text-center">
             {% for item in items %}
-              <form action="{% url 'cashier_index' %}" method="POST" id="deleteForm">
+              <form action="{% url 'customer_index' %}" method="POST" id="deleteForm">
                 {% csrf_token %}
                 <div class="mb-3">
                   <button class = "btn-menu shadow-lg" name="delete" type="submit" form="deleteForm" value="{{ item.item_id }}">{{ item.name }} ${{ item.price }} (DELETE)</button>
@@ -46,7 +46,7 @@
               </form>
             {% endfor %}
             <h1>Total Price: ${{ total_price }}</h1>
-            <form action="{% url 'cashier_index' %}" method="POST" id="orderForm">
+            <form action="{% url 'customer_index' %}" method="POST" id="orderForm">
               {% csrf_token %}
               <button class = "btn-menu shadow-lg" name="place_order" type="submit" form="orderForm" value="True">Place Order</button>
             </form>

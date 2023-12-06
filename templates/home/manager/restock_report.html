@@ -6,14 +6,26 @@
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   {% load static %}
+  {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
+
+  <style>
+    .black-button {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+  </style>
 
 </head>
 <body>
   <div class="container-fluid bg-black">
     <ul class="nav ">
       <li class="nav-item">
-        <a class="nav-link link-light" href="/">
+        <a class="nav-link link-light" href="/employee">
           <button class = "btn"></button>
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
@@ -28,6 +40,11 @@
   
     
   </div>
+
+  <a href="/accounts/logout/">
+    <button class = "black-button">Log Out</button>
+  </a>
+  {% google_translate %}
   {% block content %}
   <div class="grid-single-col ">
     <div class = "grid-item">
@@ -62,14 +79,11 @@
 
   <script>
     function changeTextSize(action) {
-        var elements = document.querySelectorAll('body, button, p');
-
+        var elements = document.querySelectorAll('body, button, p, h1, tr, div, img');
         elements.forEach(function (element) {
             var currentSize = parseInt(window.getComputedStyle(element).fontSize);
-
             var minSize = 20;
-            var maxSize = 180;
-
+            var maxSize = 150;
             if (action === 'increase' && currentSize < maxSize) {
                 element.style.fontSize = (currentSize + 2) + 'px';
             } else if (action === 'decrease' && currentSize > minSize) {

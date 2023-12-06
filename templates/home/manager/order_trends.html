@@ -14,6 +14,17 @@
   {% load google_translate %}
   <link rel="stylesheet" type="text/css" href="{% static 'home/custom_style.css' %}">
 
+  <style>
+    .black-button {
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+  </style>
+
 </head>
 <body> 
 
@@ -21,7 +32,7 @@
   <div class="container-fluid bg-black">
     <ul class="nav ">
       <li class="nav-item">
-        <a class="nav-link link-light" href="/">
+        <a class="nav-link link-light" href="/employee">
           <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
         </a>
       </li>
@@ -34,7 +45,11 @@
     {% block content %}
     {% endblock %}
     
+    
   </div>
+  <a href="/accounts/logout/">
+    <button class = "black-button">Log Out</button>
+  </a>
   <form action="{% url 'manager_order_trends' %}" method="POST" id="trendsForm">
       {% csrf_token %}
       {% google_translate %}
@@ -47,20 +62,20 @@
       
       <div class = "grid-item"></div>
       <div class = "grid-item">
-        <select type="text" name="item">
+        <select type="text" style="font-size: 20px;" name="item">
           {% for item in items %}
             <option>{{item.name}}</option>
           {% endfor %}
         </select>
       </div>
       <div class = "grid-item">
-        <input type = "datetime-local" name="start" value="{{start}}">
+        <input style="font-size: 20px;" type = "datetime-local" name="start" value="{{start}}">
       </div>
       <div class = "grid-item">
         <p>TO</p>
       </div>
       <div class = "grid-item">
-        <input type = "datetime-local" name="end" value="{{end}}">
+        <input style="font-size: 20px;" type = "datetime-local" name="end" value="{{end}}">
       </div>
       <div class = "grid-item"></div>
       <div class = "grid-item">
@@ -96,22 +111,19 @@
 
 
 <script>
-    function changeTextSize(action) {
-        var elements = document.querySelectorAll('body, button, p');
-
-        elements.forEach(function (element) {
-            var currentSize = parseInt(window.getComputedStyle(element).fontSize);
-
-            var minSize = 20;
-            var maxSize = 180;
-
-            if (action === 'increase' && currentSize < maxSize) {
-                element.style.fontSize = (currentSize + 2) + 'px';
-            } else if (action === 'decrease' && currentSize > minSize) {
-                element.style.fontSize = (currentSize - 2) + 'px';
-            }
-        });
-    }
+  function changeTextSize(action) {
+      var elements = document.querySelectorAll('body, button, p, h1, tr, div, img');
+      elements.forEach(function (element) {
+          var currentSize = parseInt(window.getComputedStyle(element).fontSize);
+          var minSize = 20;
+          var maxSize = 150;
+          if (action === 'increase' && currentSize < maxSize) {
+              element.style.fontSize = (currentSize + 2) + 'px';
+          } else if (action === 'decrease' && currentSize > minSize) {
+              element.style.fontSize = (currentSize - 2) + 'px';
+          }
+      });
+  }
 </script>
 
 </body>

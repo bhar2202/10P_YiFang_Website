@@ -164,7 +164,7 @@
     <div class="container-fluid bg-black">
         <ul class="nav ">
             <li class="nav-item">
-              <a class="nav-link link-light" href="/employee">
+              <a class="nav-link link-light" href="/">
                 <img src="{% static 'home/YiFangLogo.jpg' %}" width = "300" height = "100" alt="Image Description" class="img-fluid">
               </a>
             </li>
@@ -177,7 +177,7 @@
     {% endblock %}
     </div>
     {% google_translate %}
-    <form action="{% url 'cashier_index' %}" method="POST" id="itemForm">
+    <form action="{% url 'customer_index' %}" method="POST" id="itemForm">
         {% csrf_token %}
         <div class="ice">
             <h2>Ice Level Choose One</h2>

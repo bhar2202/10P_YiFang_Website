@@ -675,6 +675,8 @@ def place_order(request, logged_in):
                 )
                 order_item_aug.save()
         
+
+        
     for item in order_items:
         itemid = item.split(',')[0]
         print("itemid:", itemid) #getting the correct item id
